@@ -9,6 +9,15 @@ export interface ColumnType {
   align?: React.CSSProperties["textAlign"];
 }
 
+export interface TableProps {
+  columns: ColumnType[];
+  className?: string;
+  style?: React.CSSProperties;
+  dataSource?: { [x: string]: any }[];
+  rowKey?: string | ((record: { [x: string]: any }) => string);
+  tableLayout?: React.CSSProperties["tableLayout"];
+}
+
 const ColumnGroup: React.FC<{ columns: ColumnType[] }> = ({ columns }) => {
   const columnWidths = columns.map((ele) => ele.width).join("-");
   const cols = useMemo(() => {
@@ -66,14 +75,14 @@ const TableHead: React.FC<{ columns: ColumnType[] }> = ({ columns }) => {
   );
 };
 
-const Table: React.FC<{
-  columns: ColumnType[];
-  className?: string;
-  style?: React.CSSProperties;
-  dataSource?: { [x: string]: any }[];
-  rowKey?: string | ((record: { [x: string]: any }) => string);
-  tableLayout?: React.CSSProperties["tableLayout"];
-}> = ({ columns, dataSource, className, style = {}, tableLayout, rowKey }) => {
+const Table: React.FC<TableProps> = ({
+  columns,
+  dataSource,
+  className,
+  style = {},
+  tableLayout,
+  rowKey,
+}) => {
   const getRowKey = useCallback(
     (record: { [x: string]: any }) => {
       if (typeof rowKey === "function") {
