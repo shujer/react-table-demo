@@ -41,6 +41,17 @@ const ColumnGroup: React.FC<{ columns: ColumnType[] }> = ({ columns }) => {
   return <colgroup>{cols}</colgroup>;
 };
 
+const TableCell: React.FC<{ componentType?: "th" | "td" }> = ({
+  children,
+  componentType = "td",
+}) => {
+  return React.createElement(
+    componentType,
+    { className: Classes.TableCell },
+    children
+  );
+};
+
 const TableBody: React.FC<{
   dataSource?: { [x: string]: any }[];
   columns: ColumnType[];
@@ -51,9 +62,7 @@ const TableBody: React.FC<{
       {dataSource?.map((record) => (
         <tr className={Classes.TableRow} key={getRowKey(record)}>
           {columns.map((cell) => (
-            <td className={Classes.TableCell} key={cell.key}>
-              {record[cell.key]}
-            </td>
+            <TableCell key={cell.key}> {record[cell.key]}</TableCell>
           ))}
         </tr>
       ))}
@@ -66,9 +75,7 @@ const TableHead: React.FC<{ columns: ColumnType[] }> = ({ columns }) => {
     <thead className={Classes.TableHead}>
       <tr className={Classes.TableRow}>
         {columns.map((column) => (
-          <th className={Classes.TableCell} key={column.key}>
-            {column.title}
-          </th>
+          <TableCell key={column.key}>{column.title}</TableCell>
         ))}
       </tr>
     </thead>
